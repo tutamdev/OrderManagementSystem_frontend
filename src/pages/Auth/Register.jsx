@@ -1,17 +1,39 @@
 import React, { useEffect } from "react";
-import { Button, Form, Input } from "antd";
-import { Link } from "react-router-dom";
+import { Button, Form, Input, notification } from "antd";
+import { Link, useNavigate } from "react-router-dom";
+import { register } from "../../services/AuthService";
 const Register = () => {
   useEffect(() => {
     document.title = "Đăng ký";
   }, []);
-
-  const onFinish = (employee) => {
-    console.log("Employee:", employee);
+  const navigate = useNavigate();
+  const handleSubmit = async (account) => {
+    // console.log("Acount:", account);
+    await register(account)
+      .then((response) => {
+        const result = response.data;
+        if (result.code === 200) {
+          notification.success({
+            message: "Thành công",
+            description: "Đăng ký tài khoản thành công",
+            duration: 4,
+          });
+          // chuyển hướng trang đăng nhập sang login
+            navigate("/login");
+        }
+      })
+      .catch((error) => {
+        if (error?.response?.status) {
+          notification.error({
+            message: "Đăng ký thất bại",
+            message: error.response.data.message,
+          });
+        }
+      });
   };
 
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+  const handleFailed = (errorInfo) => {
+    console.log("Account:", errorInfo);
   };
 
   return (
@@ -26,8 +48,8 @@ const Register = () => {
               minWidth: 350,
               maxWidth: 800,
             }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
+            onFinish={handleSubmit}
+            onFinishFailed={handleFailed}
           >
             <Form.Item
               name="username"

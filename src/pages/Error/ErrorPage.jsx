@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Result } from "antd";
 import { useNavigate } from "react-router-dom";
 const ErrorPage = () => {
+  useEffect(() => {
+    document.title = "Trang không tồn tại!";
+  }, []);
+  
   const navigate = useNavigate();
   const backToHome = () => {
     navigate("/");

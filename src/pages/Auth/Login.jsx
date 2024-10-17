@@ -1,16 +1,52 @@
 import React, { useEffect } from "react";
-import { Button, Form, Input } from "antd";
-import { Link } from "react-router-dom";
+import { Button, Form, Input, notification } from "antd";
+import { Link, useNavigate } from "react-router-dom";
+import { login } from "../../services/AuthService";
+import LocalStorageService from "../../services/LocalStorageService";
+import { getEmployeeInfo } from "../../services/EmployeeService";
 
 const Login = () => {
   useEffect(() => {
     document.title = "Đăng nhập";
   }, []);
 
-  const onFinish = (employee) => {
-    console.log("Employee:", employee);
+  const navigate = useNavigate();
+
+  const handleLogin = async (acount) => {
+    await login(acount)
+      .then((response) => {
+        // Khi đăng nhập thành công, lưu token trong LocalStorage và chuyển hướng
+        const token = response.data.result.token;
+        LocalStorageService.setItem("token", token);
+        fetchEmployeeInfo();
+        notification.success({
+          message: "Đăng nhập thành công",
+          description: "Chào mừng đến với bình nguyên vô tận!",
+          duration: 4,
+        });
+        navigate("/");
+      })
+      .catch(() => {
+        notification.error({
+          message: "Đăng nhập không thành công!",
+          description: "Tài khoản hoặc mật khẩu không chính xác!",
+        });
+      });
   };
-  const onFinishFailed = (errorInfo) => {
+
+  const fetchEmployeeInfo = async () => {
+    await getEmployeeInfo()
+      .then((response) => {
+        const EmployeeInfo = response.data.result;
+        LocalStorageService.setItem("userLogged", EmployeeInfo);
+        console.log(LocalStorageService.getItem("userLogged"));
+        return response.data.result;
+      })
+      .catch((error) => {
+        console.log(error?.response);
+      });
+  };
+  const handleLoginFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
 
@@ -26,8 +62,8 @@ const Login = () => {
               minWidth: 350,
               maxWidth: 800,
             }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
+            onFinish={handleLogin}
+            onFinishFailed={handleLoginFailed}
           >
             <Form.Item
               name="username"
@@ -61,7 +97,7 @@ const Login = () => {
                 block
                 style={{ background: "#00b96b", color: "#fff" }}
               >
-                Đăng ký
+                Đăng nhập
               </Button>
             </Form.Item>
             <div className="text-center text-[16px]">
