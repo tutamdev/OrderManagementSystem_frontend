@@ -114,8 +114,9 @@ export const ManageEmployee = () => {
                 return (
                     <Button onClick={() => {
                         handleAction(id)
-                    }
-                    }>Chỉnh sửa</Button>
+                    }}
+                        className='-my-2'
+                    >Chỉnh sửa</Button>
                 );
             }
         }
