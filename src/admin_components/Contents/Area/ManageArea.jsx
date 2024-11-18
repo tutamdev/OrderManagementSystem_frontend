@@ -14,6 +14,7 @@ export const ManageArea = () => {
     const [areaUpdate, setAreaUpdate] = useState();
 
     useEffect(() => {
+        document.title = "Quản lý khu vực"
         fetchAllArea();
     }, []);
     const fetchAllArea = async () => {
@@ -48,7 +49,7 @@ export const ManageArea = () => {
         showModal();
     };
     const handleView = () => {
-        console.log("view");
+        // console.log("view");
     };
     const handleUpdate = (areaId) => {
         const areaSelected = data.find((area) => area.areaId === areaId);
