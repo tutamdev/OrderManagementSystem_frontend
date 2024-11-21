@@ -1,53 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Form, Input, InputNumber, Switch, Button, Select, notification } from 'antd';
-import { deleteFood, updateFood } from '../../../services/admin_services/FoodService';
+import { createFood } from '../../../services/admin_services/FoodService';
 
 const { TextArea } = Input;
 
-export const ManageFoodDetail = ({ category, handleUpdateCancel, fetAllFoodByCategoryId, foodUpdate }) => {
+export const ModalCreateFood = ({ category, handleCancel, fetAllFoodByCategoryId }) => {
     const [form] = Form.useForm();
     const [imageUrl, setImageUrl] = useState(''); // State để lưu link ảnh
 
-    useEffect(() => {
-        form.setFieldsValue({
-            foodName: foodUpdate.foodName,
-            foodPrice: foodUpdate.foodPrice,
-            description: foodUpdate.description,
-            imageUrl: foodUpdate.imageUrl,
-            availability: foodUpdate.availability
-        });
-        setImageUrl(foodUpdate.imageUrl)
-    }, [form, foodUpdate])
-
     const handleFinish = async (food) => {
         try {
-            const response = await updateFood(foodUpdate.foodId, food);
+            const response = await createFood(food);
             if (response.data.code === 200) {
-                notification.success({ message: "Cập nhật món thành công!" })
+                notification.success({ message: "Tạo món thành công!" })
             }
             fetAllFoodByCategoryId();
-            handleUpdateCancel();
+            handleCancel();
             form.resetFields();
         } catch (error) {
-            notification.warning({ message: "Cập nhật món thất bại!" });
-            console.log(error);
-
+            notification.warning({ message: "Tạo món thất bại!" })
         }
     };
-    const handleDeteteFood = async () => {
-        try {
-            const response = await deleteFood(foodUpdate.foodId);
-            if (response.data.code === 200) {
-                handleUpdateCancel();
-                fetAllFoodByCategoryId();
-                form.resetFields();
-                notification.success({ message: "Xoá thành công!" });
-            }
-        } catch (error) {
-            notification.warning({ message: "Xoá thất bại" });
-            console.log(error);
-        }
-    }
+
     const handleImageUrlChange = (e) => {
         setImageUrl(e.target.value);
     };
@@ -110,7 +84,7 @@ export const ManageFoodDetail = ({ category, handleUpdateCancel, fetAllFoodByCat
                     label="Còn trong kho"
                     name="availability"
                     valuePropName="checked"
-                // initialValue={foodUpdate.availability}
+                    initialValue="true"
 
                 >
                     <Switch
@@ -142,17 +116,11 @@ export const ManageFoodDetail = ({ category, handleUpdateCancel, fetAllFoodByCat
                         />
                     </div>
                 )}
-
-                <div className='flex justify-between'>
-                    <div>
-                        <Button danger onClick={handleDeteteFood}>Xoá</Button>
-                    </div>
-                    <div className='flex gap-2'>
-                        <Button onClick={handleUpdateCancel} type=''>Huỷ</Button>
-                        <Button type="primary" htmlType='submit'>
-                            Cập nhật
-                        </Button>
-                    </div>
+                <div className='flex gap-2 justify-end'>
+                    <Button onClick={handleCancel} type=''>Huỷ</Button>
+                    <Button type="primary" htmlType='submit'>
+                        Tạo mới
+                    </Button>
                 </div>
             </Form>
         </div>
