@@ -36,16 +36,19 @@ export const ManageDiscount = () => {
             title: "Discount Code",
             dataIndex: "discountCode",
             key: "discountCode",
+            align: "center"
         },
         {
             title: "Discount Type",
             dataIndex: "discountType",
             key: "discountType",
+            align: "center"
         },
         {
             title: "Discount Value",
             dataIndex: "discountValue",
             key: "discountValue",
+            align: "center",
             render: (value, record) =>
                 record.discountType === "PERCENT" ? `${value}%` : `${value.toLocaleString()} VND`,
         },
@@ -53,6 +56,7 @@ export const ManageDiscount = () => {
             title: "Status",
             dataIndex: "status",
             key: "status",
+            align: "center",
             render: (_, record) => (
                 <Switch
                     disabled
@@ -63,8 +67,9 @@ export const ManageDiscount = () => {
         {
             title: "Actions",
             key: "actions",
+            align: "center",
             render: (_, record) => (
-                <div className="flex gap-2">
+                <div className="">
                     <Button
                         onClick={() => {
                             setDiscountUpdate(record);
