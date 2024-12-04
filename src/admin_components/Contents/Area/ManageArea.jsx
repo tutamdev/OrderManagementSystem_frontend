@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Modal, notification, Popconfirm, Table, Tooltip } from 'antd';
 import { ModalCreateArea } from './ModalCreateArea';
-import { deleteArea, getAllArea } from '../../../services/AreaService';
+import { deleteArea, getAllArea } from '../../../services/admin_services/AreaService';
 import { Link } from 'react-router-dom';
 import { ModalUpdateArea } from './ModalUpdateArea';
 

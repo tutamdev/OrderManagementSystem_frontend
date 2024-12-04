@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Button, Form, Input, notification } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
-import { createArea } from '../../../services/AreaService';
+import { createArea } from '../../../services/admin_services/AreaService';
 
 const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);

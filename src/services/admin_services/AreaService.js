@@ -1,4 +1,4 @@
-import BASE_URL from "./HTTPService"
+import BASE_URL from "../HTTPService"
 
 export const getAllArea = () => {
     const response = BASE_URL.get("/areas");

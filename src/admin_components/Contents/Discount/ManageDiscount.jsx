@@ -19,6 +19,7 @@ export const ManageDiscount = () => {
     };
 
     useEffect(() => {
+        document.title = "Quản lý mã giảm giá"
         fetchDiscount();
     }, []);
     const [isModalOpen, setIsModalOpen] = useState(false);
