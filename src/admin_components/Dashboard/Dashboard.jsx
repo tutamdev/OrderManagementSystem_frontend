@@ -91,7 +91,6 @@ export const Dashboard = () => {
             ordersForShifts.push({ shiftId: shift.shiftId, orders: ordersWithDetails });
         }
 
-        console.log(ordersForShifts);
         setData(ordersForShifts); // Cập nhật data sau khi lấy xong
     };
 

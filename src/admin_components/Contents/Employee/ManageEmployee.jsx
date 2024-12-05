@@ -31,7 +31,6 @@ export const ManageEmployee = () => {
         }
     };
     useEffect(() => {
-        console.log("Mouted");
         fetchEmployees();
     }, []);
 
