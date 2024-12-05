@@ -11,7 +11,6 @@ export const ManageCategory = () => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [categoryUpdate, setCategoryUpdate] = useState();
-    // const [categorySlected, setCategorySelected] = useState();
 
 
     useEffect(() => {
@@ -49,14 +48,13 @@ export const ManageCategory = () => {
     const handleCreateArea = () => {
         showModal();
     };
-    const handleUpdate = (categoryId) => {
-        const categorySelected = data.find((category) => category.categoryId === categoryId);
-        setCategoryUpdate(categorySelected)
+    const handleUpdate = (category) => {
+        setCategoryUpdate(category)
         setIsModalUpdateOpen(true);
     };
-    const handleDelete = async (categoryId) => {
+    const handleDelete = async (category) => {
         try {
-            const response = await deleteCategory(categoryId);
+            const response = await deleteCategory(category.categoryId);
             if (response.data.code === 200) {
                 notification.success({
                     message: "Xoá thể loại món thành công",
@@ -88,16 +86,16 @@ export const ManageCategory = () => {
             key: "categoryId",
             align: 'center',
             width: "40%",
-            render: (category) => {
+            render: (_, category) => {
                 return (
                     <div className='flex gap-4 justify-center'>
                         <Button color='default' variant='outlined' className='-my-2'
-                            onClick={() => handleUpdate(category.categoryId)}
-                        >Sửa khu vực</Button>
+                            onClick={() => handleUpdate(category)}
+                        >Sửa thể loại món</Button>
                         <Popconfirm
                             title="Xoá khu vực"
                             description="Bạn có muốn xoá khu vực này không?"
-                            onConfirm={() => { handleDelete(category.categoryId) }}
+                            onConfirm={() => { handleDelete(category) }}
                             okText="Xác nhận xoá"
                             cancelText="Huỷ bỏ"
                         >
@@ -105,7 +103,7 @@ export const ManageCategory = () => {
                             >Xoá khu vực</Button>
                         </Popconfirm>
                         <Button color="primary" variant="outlined" className='-my-2'>
-                            <Link to={category.categoryId} state={{ category }}>Xem danh món ăn</Link>
+                            <Link to={category.categoryId}>Xem danh món ăn</Link>
                         </Button>
                     </div >
                 )

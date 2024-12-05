@@ -132,13 +132,6 @@ export const ManageShift = () => {
         <div>
             <div className='flex border-b p-2'>
                 <p className='flex-grow ml-2 text-2xl'>Quản lý ca làm việc</p>
-                {/* <Button
-                        variant='filled'
-                        color='primary'
-                        onClick={handleCreateArea}
-                    >
-                        Tạo mới thể loại món
-                    </Button> */}
             </div>
             <Table columns={columns} dataSource={data} rowKey="shiftId" pagination={{ position: ["bottomCenter"], pageSize: 8 }} />
         </div>

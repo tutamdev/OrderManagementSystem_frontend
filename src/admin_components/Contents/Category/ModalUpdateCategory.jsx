@@ -10,7 +10,6 @@ export const ModalUpdateCategory = ({ categoryUpdate, handleUpdateCancel, fetchA
         console.log('Failed:', errorInfo);
     };
     useEffect(() => {
-        // console.log(categoryUpdate);
         form.setFieldsValue({
             categoryId: categoryUpdate.categoryId,
             name: categoryUpdate.name
@@ -18,7 +17,6 @@ export const ModalUpdateCategory = ({ categoryUpdate, handleUpdateCancel, fetchA
     }, [categoryUpdate, form])
 
     const onFinish = async (categoryUpdate) => {
-        // console.log(categoryUpdate);
         try {
             const response = await updateCategory(categoryUpdate);
             if (response.data.code === 200) {
@@ -35,7 +33,6 @@ export const ModalUpdateCategory = ({ categoryUpdate, handleUpdateCancel, fetchA
                 message: "Cập nhật không thành công",
                 description: "Thể loại đã tồn tại!"
             });
-            // console.log(error);
         }
     };
 
@@ -46,7 +43,6 @@ export const ModalUpdateCategory = ({ categoryUpdate, handleUpdateCancel, fetchA
         <div>
             <Form
                 form={form} // Đảm bảo form được truyền vào đây
-                // name="basic"
                 labelCol={{
                     span: 7,
                 }}

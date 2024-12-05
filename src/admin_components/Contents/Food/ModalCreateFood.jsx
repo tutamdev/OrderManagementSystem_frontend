@@ -17,6 +17,7 @@ export const ModalCreateFood = ({ category, handleCancel, fetAllFoodByCategoryId
             fetAllFoodByCategoryId();
             handleCancel();
             form.resetFields();
+            setImageUrl('');
         } catch (error) {
             notification.warning({ message: "Tạo món thất bại!" })
         }

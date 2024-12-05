@@ -3,7 +3,6 @@ import { Button, Form, Input, notification, Select, Switch } from 'antd';
 import { updateDiscount } from '../../../services/admin_services/DiscountService';
 export const ModalupdateDiscount = ({ handleCancel, fetchDiscount, discountUpdate }) => {
     const [form] = Form.useForm();
-    const { Option } = Select;
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
     };

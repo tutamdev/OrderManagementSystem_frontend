@@ -96,22 +96,23 @@ export const Dashboard = () => {
     };
 
     return (
-        <div className="container mx-auto p-4">
-            {/* <h1 className="text-2xl font-bold mb-6">Dashboard</h1> */}
-            <div className="p-4 mb-4 flex justify-center bg-white rounded-lg">
-                <OrderSummary data={data} />
+        <div>
+            <div className='flex border-b p-2'>
+                <p className='flex-grow ml-2 text-2xl'>Tổng quan</p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="p-4 bg-white shadow-lg rounded-lg">
-                    <RevenueByShift data={data} />
-
+            <div className="container mx-auto p-4">
+                {/* <h1 className="text-2xl font-bold mb-6">Dashboard</h1> */}
+                <div className="p-4 mb-4 flex justify-center bg-white rounded-lg">
+                    <OrderSummary data={data} />
                 </div>
-                <div className="p-4 bg-white shadow-lg rounded-lg">
-                    <RevenueHorizontalBarChart data={data} />
-
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="p-4 bg-white shadow-lg rounded-lg min-h-56">
+                        <RevenueByShift data={data} />
+                    </div>
+                    <div className="p-4 bg-white shadow-lg rounded-lg min-h-56">
+                        <RevenueHorizontalBarChart data={data} />
+                    </div>
                 </div>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             </div>
         </div>
     );

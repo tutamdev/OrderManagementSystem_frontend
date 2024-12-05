@@ -17,7 +17,7 @@ export const Sidebar = () => {
     { link: "/admin/discount", icon: <BiSolidDiscount />, label: "Ưu đãi" }
   ];
   return (
-    <div className="w-52 bg-gray-50 border-r border-gray-200 flex flex-col justify-between h-full">
+    <div className="min-w-52 bg-gray-50 border-r flex flex-col justify-between h-full fixed z-10">
       <div className="py-2 px-6">
         <a href="/admin">
           <img
@@ -37,7 +37,7 @@ export const Sidebar = () => {
             to={item.link}
             end={item.link === "/admin"}
             className={({ isActive }) =>
-              `flex items-center space-x-3 px-6 py-2.5 text-gray-500 ${isActive ? 'text-orange-500' : 'hover:text-orange-500'} group`
+              `flex  items-center space-x-3 ml-2 px-6 py-2.5 text-gray-500 ${isActive ? 'text-orange-500' : 'hover:text-orange-500'} group`
             }
           >
             {item.icon}
@@ -52,7 +52,7 @@ export const Sidebar = () => {
         <NavLink
           to={"/admin/profile"}
           className={({ isActive }) =>
-            `flex items-center space-x-3 px-6 py-2.5 text-gray-500 ${isActive ? 'text-orange-500' : 'hover:text-orange-500'} group`
+            `flex items-center space-x-3 ml-2 px-6 py-2.5 text-gray-500 ${isActive ? 'text-orange-500' : 'hover:text-orange-500'} group`
           }
         >
           <FaUserEdit />

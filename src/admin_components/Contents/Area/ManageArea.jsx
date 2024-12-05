@@ -49,16 +49,14 @@ export const ManageArea = () => {
         showModal();
     };
     const handleView = () => {
-        // console.log("view");
     };
-    const handleUpdate = (areaId) => {
-        const areaSelected = data.find((area) => area.areaId === areaId);
-        setAreaUpdate(areaSelected)
+    const handleUpdate = (area) => {
+        setAreaUpdate(area)
         setIsModalUpdateOpen(true);
     };
-    const handleDelete = async (areaId) => {
+    const handleDelete = async (area) => {
         try {
-            const response = await deleteArea(areaId);
+            const response = await deleteArea(area.areaId);
             if (response.data.code === 200) {
                 notification.success({
                     message: "Xoá khu vực thành công",
@@ -96,16 +94,16 @@ export const ManageArea = () => {
             key: "areaId",
             align: 'center',
             width: "40%",
-            render: (area) => {
+            render: (_, area) => {
                 return (
                     <div className='flex gap-4 justify-center'>
                         <Button color='default' variant='outlined' className='-my-2'
-                            onClick={() => handleUpdate(area.areaId)}
+                            onClick={() => handleUpdate(area)}
                         >Sửa khu vực</Button>
                         <Popconfirm
                             title="Xoá khu vực"
                             description="Bạn có muốn xoá khu vực này không?"
-                            onConfirm={() => { handleDelete(area.areaId) }}
+                            onConfirm={() => { handleDelete(area) }}
                             okText="Xác nhận xoá"
                             cancelText="Huỷ bỏ"
                         >

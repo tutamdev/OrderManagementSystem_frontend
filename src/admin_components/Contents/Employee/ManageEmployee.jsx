@@ -125,7 +125,9 @@ export const ManageEmployee = () => {
 
     return (
         <div>
-            <div className='p-2 border-b ml-2 text-2xl'>Quản lý nhân viên</div>
+            <div className='flex border-b p-2'>
+                <p className='flex-grow ml-2 text-2xl'>Quản lý nhân viên</p>
+            </div>
             <Table
                 columns={columns}
                 dataSource={data}

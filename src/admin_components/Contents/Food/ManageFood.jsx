@@ -53,7 +53,6 @@ export const ManageFood = () => {
                 >
                     Trở về
                 </Button>
-                {/* <h2>Trà sữa</h2> */}
                 <Button
                     variant='filled'
                     color='primary'

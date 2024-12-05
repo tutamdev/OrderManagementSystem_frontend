@@ -6,7 +6,7 @@ import Login from "./pages/Auth/Login";
 import ErrorPage from "./pages/Error/ErrorPage";
 
 // Admin
-import AdminHome from "./admin/AdminHome";
+import AdminHome from "./pages/Admin/AdminHome";
 import { Dashboard } from "./admin_components/Dashboard/Dashboard";
 import { ManageEmployee } from "./admin_components/Contents/Employee/ManageEmployee";
 import { ManageArea } from "./admin_components/Contents/Area/ManageArea";
@@ -14,7 +14,6 @@ import { ManageCategory } from "./admin_components/Contents/Category/ManageCateg
 import { ManageShift } from "./admin_components/Contents/Shift/ManageShift";
 import { ManageDiscount } from "./admin_components/Contents/Discount/ManageDiscount";
 import { Profile } from "./admin_components/Contents/Employee/Profile";
-import { EmployeeDetail } from "./admin_components/Contents/Employee/EmployeeDetail";
 import { MangeTable } from "./admin_components/Contents/Table/MangeTable";
 import { ManageFood } from "./admin_components/Contents/Food/ManageFood";
 import { ManageOrder } from "./admin_components/Contents/Order/ManageOrder";
@@ -40,7 +39,6 @@ export default function App() {
           <Route index element={<Dashboard />} />
 
           <Route path="employee" element={<ManageEmployee />} />
-          <Route path="employee/user:id" element={<EmployeeDetail />} />
 
           <Route path="area" element={<ManageArea />} />
           <Route path="area/:areaId" element={< MangeTable />} />

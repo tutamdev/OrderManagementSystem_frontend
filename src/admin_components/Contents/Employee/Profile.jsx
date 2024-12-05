@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form, Input, notification, Select, Tag } from "antd";
 import { getMyInfor, updateInformation } from "../../../services/EmployeeService";
-import { useForm } from "antd/es/form/Form";
 
 export const Profile = () => {
     const [user, setUser] = useState();
@@ -86,87 +85,88 @@ export const Profile = () => {
     };
 
     return (
-        <div className="h-[calc(100vh-56px)] bg-gray-100 flex items-center justify-center">
-            <div className="p-6 min-w-96 bg-white shadow-md rounded-md max-w-md mx-auto">
-                <Form
-                    form={form}
-                    {...formItemLayout}
-                    initialValues={{
-                        username: user?.username,
-                        fullName: user?.fullName,
-                        role: user?.role,
-                        status: user?.status,
-                    }}
-                >
-                    {/* Username */}
-                    <Form.Item label="Tên đăng nhập" name="username">
-                        <Input readOnly disabled />
-                    </Form.Item>
-
-                    {/* Full Name */}
-                    <Form.Item label="Họ và tên" name="fullName">
-                        <Input />
-                    </Form.Item>
-
-                    {/* Password */}
-                    <Form.Item
-                        label="Mật khẩu cũ"
-                        name="oldPassword"
-                        rules={[
-                            {
-                                required: true,
-                                message: "Mật khẩu không được để trống!",
-                            }
-                        ]}
+        <div>
+            <div className='flex border-b p-2'>
+                <p className='flex-grow ml-2 text-2xl'>Quản lý thông tin cá nhân</p>
+            </div>
+            <div className="h-[calc(100vh-105px)] bg-gray-100 flex items-center justify-center">
+                <div className="p-6 min-w-96 bg-white shadow-md rounded-md max-w-md mx-auto">
+                    <Form
+                        form={form}
+                        {...formItemLayout}
+                        initialValues={{
+                            username: user?.username,
+                            fullName: user?.fullName,
+                            role: user?.role,
+                            status: user?.status,
+                        }}
                     >
-                        <Input.Password
-                            placeholder="Enter password"
-                            autoComplete="current-password"
-                        />
-                    </Form.Item>
+                        <Form.Item label="Tên đăng nhập" name="username">
+                            <Input readOnly disabled />
+                        </Form.Item>
 
-                    <Form.Item
-                        label="Mật khẩu mới"
-                        name="newPassword"
-                        rules={[
-                            {
-                                required: true,
-                                message: "Mật khẩu không được để trống!",
-                            },
-                            {
-                                min: 6,
-                                message: "Mật khẩu cần tối thiểu 6 ký tự!",
-                            },
-                        ]}
-                    >
-                        <Input.Password
-                            placeholder="Enter password"
-                            autoComplete="current-password"
-                        />
-                    </Form.Item>
+                        <Form.Item label="Họ và tên" name="fullName">
+                            <Input />
+                        </Form.Item>
 
-                    {/* Role */}
-                    <Form.Item label="Quyền" name="role">
-                        <Select options={roleOptions} />
-                    </Form.Item>
+                        <Form.Item
+                            label="Mật khẩu cũ"
+                            name="oldPassword"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "Mật khẩu không được để trống!",
+                                }
+                            ]}
+                        >
+                            <Input.Password
+                                placeholder="Enter password"
+                                autoComplete="current-password"
+                            />
+                        </Form.Item>
 
-                    {/* Status */}
-                    <Form.Item
-                        label="Trạng thái"
-                        name="status"
-                        rules={[{ required: true, message: 'Please input!' }]}
-                    >
-                        {/* <Select options={statusOptions} disabled /> */}
-                        <Select
-                            variant='borderless'
-                            options={statusOptions} />
-                    </Form.Item>
-                </Form>
-                {/* <Button onClick={handleOK} type='primary'>OK</Button> */}
-                <div className="flex justify-center">
-                    <Button onClick={handleUpdateInfo} type="dashed">Cập nhật thông tin</Button>
+                        <Form.Item
+                            label="Mật khẩu mới"
+                            name="newPassword"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "Mật khẩu không được để trống!",
+                                },
+                                {
+                                    min: 6,
+                                    message: "Mật khẩu cần tối thiểu 6 ký tự!",
+                                },
+                            ]}
+                        >
+                            <Input.Password
+                                placeholder="Enter password"
+                                autoComplete="current-password"
+                            />
+                        </Form.Item>
+
+                        {/* Role */}
+                        <Form.Item label="Quyền" name="role">
+                            <Select options={roleOptions} />
+                        </Form.Item>
+
+                        {/* Status */}
+                        <Form.Item
+                            label="Trạng thái"
+                            name="status"
+                            rules={[{ required: true, message: 'Please input!' }]}
+                        >
+                            <Select
+                                variant='borderless'
+                                options={statusOptions} />
+                        </Form.Item>
+                    </Form>
+                    <div className="flex justify-center">
+                        <Button onClick={handleUpdateInfo} type="dashed">Cập nhật thông tin</Button>
+                    </div>
                 </div>
             </div>
         </div>
+
     );
 };

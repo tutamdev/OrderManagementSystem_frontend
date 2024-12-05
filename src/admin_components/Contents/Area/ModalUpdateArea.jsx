@@ -12,7 +12,6 @@ export const ModalUpdateArea = ({ handleUpdateCancel, fetchAllArea, areaUpdate }
     const [form] = Form.useForm();
 
     useEffect(() => {
-        console.log(areaUpdate);
         form.setFieldsValue({
             areaId: areaUpdate.areaId,
             areaName: areaUpdate.areaName,

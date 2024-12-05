@@ -37,7 +37,6 @@ export const ModalCreateCategory = ({ handleCancel, fetchAllCategory }) => {
         <>
             <Form
                 form={form} // Đảm bảo form được truyền vào đây
-                // name="basic"
                 labelCol={{
                     span: 7,
                 }}

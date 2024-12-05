@@ -28,10 +28,10 @@ export const ManageFoodDetail = ({ category, handleUpdateCancel, fetAllFoodByCat
             fetAllFoodByCategoryId();
             handleUpdateCancel();
             form.resetFields();
+            setImageUrl('');
         } catch (error) {
             notification.warning({ message: "Cập nhật món thất bại!" });
             console.log(error);
-
         }
     };
     const handleDeteteFood = async () => {
@@ -110,7 +110,6 @@ export const ManageFoodDetail = ({ category, handleUpdateCancel, fetAllFoodByCat
                     label="Còn trong kho"
                     name="availability"
                     valuePropName="checked"
-                // initialValue={foodUpdate.availability}
 
                 >
                     <Switch
