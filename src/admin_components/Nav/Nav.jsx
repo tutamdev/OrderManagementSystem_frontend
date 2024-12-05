@@ -2,11 +2,20 @@ import React from 'react'
 import { LogoutOutlined, QuestionCircleOutlined, SettingOutlined } from '@ant-design/icons';
 import { Avatar, Button, Dropdown, Popconfirm, Space } from 'antd';
 import LocalStorageService from '../../services/LocalStorageService';
+import { logout } from '../../services/AuthService';
 
 export const Nav = () => {
-    const handleLogout = () => {
-        console.log("logout");
-        // TODO
+    const handleLogout = async () => {
+        try {
+            const token = { token: LocalStorageService.getItem("token") };
+            await logout(token);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            LocalStorageService.clear();
+            window.location.href = "/login";
+        }
+
     }
     const userLogged = LocalStorageService.getItem("userLogged");
     return (
