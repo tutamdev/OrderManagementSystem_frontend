@@ -42,17 +42,18 @@ function Nav(){
                     <h3>GROUP 19</h3>
                 </Menu.Item>
 
-                <div className="mx-auto ">
+                
+                <div className="absolute left-1/2 transform -translate-x-1/2">
                     <p style={{height:'20px', fontSize:'16px', fontWeight:'bolder'}}>{currentDate}</p>
-                    <p style={{height:'20px'}} className="d-flex justify-content-center">{currentClock}</p>
+                    <p style={{height:'20px'}} className="flex justify-center">{currentClock}</p>
                 </div>
 
-                <div className="d-flex ms-auto">
+                <div className="flex ms-auto">
                     <div>
                         <p style={{height:'20px', fontSize:'16px', fontWeight:'bolder'}}>{userData.full_name}</p>
-                        <p style={{height:'20px'}} className="d-flex justify-content-end">{userData.role}</p>
+                        <p style={{height:'20px'}} className="flex justify-end">{userData.role}</p>
                     </div>
-                    <div >
+                    <div className="flex items-center">
                         <img 
                             src={avatar}
                             alt="Logo" 
