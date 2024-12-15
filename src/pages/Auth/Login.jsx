@@ -24,7 +24,7 @@ const Login = () => {
           description: "Chào mừng đến với bình nguyên vô tận!",
           duration: 4,
         });
-        navigate("/");
+        navigate("/shifts");
       })
       .catch(() => {
         notification.error({
