@@ -86,7 +86,6 @@ const ShiftMonitor= () => {
         await closeShift(shiftId);
         navigate("/shifts");
     }
-    
 
     return (
         <Layout>
@@ -95,6 +94,7 @@ const ShiftMonitor= () => {
                 <Side /> {/* Sidebar */}
                 <Layout >
                     <Content>
+                    <h1 className="flex items-center justify-center text-2xl mt-4" style={{fontWeight:'bold'}}>Chi tiết hóa đơn của ca</h1>
                         {showDetail ? (
                             <Card title="Chi tiết hóa đơn" bordered={false} style={{margin: '20px' }}>
                             <Table dataSource={invoiceDetails} columns={columns} rowKey="invoiceId" />
@@ -103,7 +103,8 @@ const ShiftMonitor= () => {
                             </Button>
                         </Card>
                         ) : (
-                            <div className="flex items-center justify-between" style={{ padding: '0 24px 24px', marginTop: '100px' }}>
+                            
+                            <div className="flex items-center justify-between" style={{ padding: '0 24px 24px', marginTop: '30px' }}>
                                 <div className="revenue-container">
                                     <div className="revenue-title">Doanh thu</div>
                                     <div className="revenue-value">{revenue} VNĐ</div>
@@ -118,9 +119,18 @@ const ShiftMonitor= () => {
                                 </div>
                             </div>
                         )}
-                        <div className="button-container flex items-center justify-center h-screen">
-                            <button className="btn btn-confirm" onClick={fetchShift}>Chốt ca</button>
-                            <button className="btn btn-print">Chốt ca và in đơn</button>
+                        <div className="button-container flex items-center justify-center space-x-4">
+                            <button 
+                                className="btn bg-blue-500 text-white font-bold py-2 px-4 rounded shadow hover:bg-blue-600 hover:shadow-lg transition duration-200" 
+                                onClick={fetchShift}
+                            >
+                                Chốt ca
+                            </button>
+                            <button 
+                                className="btn bg-green-500 text-white font-bold py-2 px-4 rounded shadow hover:bg-green-600 hover:shadow-lg transition duration-200"
+                            >
+                                Chốt ca và in đơn
+                            </button>
                         </div>
                     </Content>
                 </Layout>

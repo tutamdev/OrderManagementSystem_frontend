@@ -9,12 +9,12 @@ import 'jspdf-autotable'; // Nếu bạn sử dụng autotable
 import font from '../../../assets/Roboto/Roboto-Regular.ttf';
 import { useNavigate, useParams } from 'react-router-dom';
 import { completeOrder } from '../../../services/OrderService';
-import { getDiscountByDiscountCode } from '../../../services/DiscountService';
+import { getDiscountByDiscountCode, getAllDiscounts } from '../../../services/DiscountService';
 
 function Pay({cartItems, onQuantityChange}){
     const [note, setNote] = useState(); // State để lưu ghi chú
     const [discountCode, setDiscountCode] = useState(); // State để lưu mã giảm giá
-    const [discountCodes, setDiscountCodes] = useState([]); // State để lưu mã giảm giá
+    const [existingDiscount, setExistingDiscount] = useState([]); // State để lưu mã giảm giá
     const [totalAmount, setTotalAmount] = useState(0); // State để lưu tổng số tiền
     const printRef = useRef(); // Sử dụng useRef để tham chiếu đến phần HTML cần in
     const {orderId} = useParams();
@@ -22,10 +22,7 @@ function Pay({cartItems, onQuantityChange}){
     // Tính tổng số tiền
     const calculateTotal = () => {
         const subtotal = cartItems.reduce((total, item) => total + item.foodPrice * item.quantity, 0);
-        // Nếu đã tồn tại, tìm orderdetail của food này
-        const existingDiscount = discountCodes.find(
-            dc => dc.discountCode === discountCode
-        );
+        // Nếu đã tồn tại, tìm discount 
         // Áp dụng mã giảm giá nếu có
         let discount = 0;
         if (existingDiscount) {
@@ -35,8 +32,6 @@ function Pay({cartItems, onQuantityChange}){
                 discount = existingDiscount.discountValue; // Giảm theo số tiền cố định
             }
         }
-        
-
         const total = subtotal - discount; // Tính tổng sau khi giảm giá
         return total < 0 ? 0 : total; // Đảm bảo tổng không âm
     };
@@ -45,18 +40,25 @@ function Pay({cartItems, onQuantityChange}){
     useEffect(() => {
         const newTotal = calculateTotal();
         setTotalAmount(newTotal);
-    }, [cartItems]); 
+    }, [cartItems, existingDiscount]); 
 
     useEffect(() => {     
         fetchDiscount(discountCode);
     }, [discountCode]); 
 
     const fetchDiscount = async() =>{
-        const response = await getDiscountByDiscountCode(discountCode);
-        if(response.data.code == "200"){
-            setDiscountCodes(response.data.result);
+        const check = await getAllDiscounts();
+        const exist = check.data.result.find(dis => dis.discountCode === discountCode);
+        if(exist){
+            setExistingDiscount(exist);
         }
-        
+        else{
+            setExistingDiscount();
+        }
+        // if(existingDiscount){
+        //     const response = await getDiscountByDiscountCode(discountCode);
+        //     setDiscountCodes(response.data.result);
+        // }   
     }
 
     const fetchComplteOrder = async () => {
@@ -87,6 +89,9 @@ function Pay({cartItems, onQuantityChange}){
         // Tính tổng
         const total = cartItems.reduce((sum, item) => sum + item.foodPrice * item.quantity, 0);
         doc.text(`Total: ${total} VNĐ`, 20, y);
+
+        //note
+        doc.text(`Note: ${note}`, 20, 20);
 
         // Lưu file PDF
         doc.save('hoa_don.pdf');

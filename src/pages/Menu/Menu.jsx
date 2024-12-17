@@ -4,6 +4,7 @@ const { Content} = Layout;
 import React from "react";
 import { Outlet } from "react-router-dom";
 import SideMenu from "../../components/Side/SideMenu";
+import MenuDetail from "../../components/Content/Menu/MenuDetail";
 
 function Menu(){
     return(
@@ -14,9 +15,7 @@ function Menu(){
                 <SideMenu/>
                 <Layout>
                     <Content>
-                        <div className="">
-                            <Outlet />
-                        </div>
+                        <MenuDetail />
                     </Content>
                 </Layout>
             </Layout>
