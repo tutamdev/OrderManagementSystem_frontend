@@ -103,7 +103,7 @@ export const ManageCategory = () => {
                             >Xoá khu vực</Button>
                         </Popconfirm>
                         <Button color="primary" variant="outlined" className='-my-2'>
-                            <Link to={category.categoryId}>Xem danh món ăn</Link>
+                            <Link to={category.categoryId} state={{category}}>Xem danh món ăn</Link>
                         </Button>
                     </div >
                 )
