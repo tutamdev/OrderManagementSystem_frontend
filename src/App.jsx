@@ -31,7 +31,7 @@ export default function App() {
         </Route>
 
         {/* orders */}
-        <Route path="/orders/:orderId" element={<Order />} />
+        <Route path="/table/:tableId/orders/:orderId" element={<Order />} />
 
         {/* shift */}
         <Route path="/shifts" element={<Shift/>}/>

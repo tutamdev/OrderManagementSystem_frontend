@@ -3,9 +3,10 @@ import { useParams } from "react-router-dom";
 import { getTablesByAreaId } from "../../../services/TableService";
 import Table from "./Table";
 
-function AreaDetail(){
+function AreaDetail({newStatus}){
     const [tables, setTables] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [updateStatus, setUpdateStatus] = useState();
 
     // get areaId from url
     const {areaId: paramAreaId} = useParams();
@@ -16,7 +17,8 @@ function AreaDetail(){
 
     useEffect(() => {
         fetchTables();
-    }, [areaId]);
+        setUpdateStatus(newStatus);
+    }, [areaId, updateStatus]);
     
     const fetchTables = async() => {
         try {

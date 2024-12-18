@@ -72,7 +72,7 @@ function Table({tableId, name, status}){
     useEffect(() => {
         if (orderId) {
           // Chuyển hướng ngay lập tức và truyền state
-          navigate(`/orders/${orderId}`, { 
+          navigate(`/table/${tableId}/orders/${orderId}`, { 
             state: { 
               showToast: true,
               tableName: name 
@@ -127,7 +127,7 @@ function Table({tableId, name, status}){
                 if (unavailableResult.isConfirmed) {
                     const response = await getOrderNotCompleteByTableId(tableId);
                     // Chuyển hướng ngay lập tức và truyền state
-                    navigate(`/orders/${response.data.result.orderId}`, { 
+                    navigate(`/table/${tableId}/orders/${response.data.result.orderId}`, { 
                         state: { 
                         showToast: true,
                         tableName: name 

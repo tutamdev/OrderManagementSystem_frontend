@@ -10,15 +10,31 @@ import font from '../../../assets/Roboto/Roboto-Regular.ttf';
 import { useNavigate, useParams } from 'react-router-dom';
 import { completeOrder } from '../../../services/OrderService';
 import { getDiscountByDiscountCode, getAllDiscounts } from '../../../services/DiscountService';
+import {updateOrder} from "../../../services/OrderService";
+import {getEmployeeInfo} from "../../../services/EmployeeService";
 
-function Pay({cartItems, onQuantityChange}){
+
+function Pay({cartItems, updateState, onQuantityChange}){
     const [note, setNote] = useState(); // State để lưu ghi chú
     const [discountCode, setDiscountCode] = useState(); // State để lưu mã giảm giá
     const [existingDiscount, setExistingDiscount] = useState([]); // State để lưu mã giảm giá
     const [totalAmount, setTotalAmount] = useState(0); // State để lưu tổng số tiền
     const printRef = useRef(); // Sử dụng useRef để tham chiếu đến phần HTML cần in
     const {orderId} = useParams();
+    const {idTable} = useParams();
     const navigate = useNavigate();
+    
+
+    // Cập nhật tổng số tiền mỗi khi cartItems thay đổi
+    useEffect(() => {
+        const newTotal = calculateTotal();
+        setTotalAmount(newTotal);
+    }, [cartItems, existingDiscount]); 
+
+    useEffect(() => {     
+        fetchDiscount(discountCode);
+    }, [discountCode]); 
+
     // Tính tổng số tiền
     const calculateTotal = () => {
         const subtotal = cartItems.reduce((total, item) => total + item.foodPrice * item.quantity, 0);
@@ -36,16 +52,6 @@ function Pay({cartItems, onQuantityChange}){
         return total < 0 ? 0 : total; // Đảm bảo tổng không âm
     };
 
-    // Cập nhật tổng số tiền mỗi khi cartItems thay đổi
-    useEffect(() => {
-        const newTotal = calculateTotal();
-        setTotalAmount(newTotal);
-    }, [cartItems, existingDiscount]); 
-
-    useEffect(() => {     
-        fetchDiscount(discountCode);
-    }, [discountCode]); 
-
     const fetchDiscount = async() =>{
         const check = await getAllDiscounts();
         const exist = check.data.result.find(dis => dis.discountCode === discountCode);
@@ -62,7 +68,38 @@ function Pay({cartItems, onQuantityChange}){
     }
 
     const fetchComplteOrder = async () => {
-        const response = await completeOrder(orderId);
+        await completeOrder(orderId);
+    }
+
+
+    const fetchUpdateOrder = async () => {
+        try {
+            const employee = await getEmployeeInfo();
+    
+            const existingOrder = {
+                employeeId: employee.data.result.id,
+                note: 'Đây là note',
+                tableId: idTable,
+                discountCode: ''
+            };
+    
+            // Gọi API để cập nhật đơn hàng
+            const response = await updateOrder(orderId, {
+                employeeId: employee.data.result.id,
+                note: 'Đây là note',
+                tableId: idTable,
+                discountCode: existingDiscount.discountCode
+            });
+    
+            console.log(response.data.message);
+        } catch (error) {
+            if (error.response) {
+                console.error("Lỗi từ server:", error.response.data);
+                console.error("Lỗi từ server:", error.message);
+            } else {
+                console.error("Lỗi không xác định:", error.message);
+            }        
+        }
     }
 
 
@@ -96,11 +133,13 @@ function Pay({cartItems, onQuantityChange}){
         // Lưu file PDF
         doc.save('hoa_don.pdf');
         fetchComplteOrder();
+        fetchUpdateOrder();
         navigate(-1);
         notification.success({
             message: "Thành toán thành công",
             duration: 2,
           });
+
     };
 
     
@@ -152,7 +191,7 @@ function Pay({cartItems, onQuantityChange}){
                     </div>
 
                     {/* Hiển thị tổng số tiền */}
-                    <button onClick={handlePayment} className="bg-red-500 text-lg text-white p-2 w-full flex  justify-between">
+                    <button onClick={handlePayment} updateState="AVAILABLE" className="bg-red-500 text-lg text-white p-2 w-full flex  justify-between">
                         <span>Thanh toán</span> 
                         <span>{totalAmount.toLocaleString()} VNĐ</span>
                     </button>

@@ -21,5 +21,9 @@ export const completeOrder = (orderId) => {
     return response;
 }
 
+export const updateOrder = (orderId) => {
+    const response = BASE_URL.put(`/orders/${orderId}`);
+    return response;
+}
 
 
