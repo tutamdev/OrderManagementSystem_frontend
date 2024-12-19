@@ -73,29 +73,24 @@ function Pay({cartItems, updateState, onQuantityChange}){
 
 
     const fetchUpdateOrder = async () => {
-        try {
-            const employee = await getEmployeeInfo();
-    
-            const existingOrder = {
-                employeeId: employee.data.result.id,
-                note: 'Đây là note',
-                tableId: idTable,
-                discountCode: ''
-            };
-    
+        try {    
             // Gọi API để cập nhật đơn hàng
-            const response = await updateOrder(orderId, {
-                employeeId: employee.data.result.id,
+            
+
+            const order = {
+                employeeId: '732a2d0a-a03b-4c23-b571-c52e7c638d2a',
                 note: 'Đây là note',
-                tableId: idTable,
+                tableId: "668c4a0d-c4e8-4c9d-8e33-3b1e1f16f96a",
                 discountCode: existingDiscount.discountCode
-            });
+            }
+
+            console.log(order);
+
+            const response = await updateOrder(orderId, order);
     
-            console.log(response.data.message);
         } catch (error) {
             if (error.response) {
                 console.error("Lỗi từ server:", error.response.data);
-                console.error("Lỗi từ server:", error.message);
             } else {
                 console.error("Lỗi không xác định:", error.message);
             }        
