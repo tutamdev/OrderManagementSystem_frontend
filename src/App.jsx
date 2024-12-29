@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home/Home";
 import Register from "./pages/Auth/Register";
@@ -66,7 +66,6 @@ export default function App() {
         {/* Admin */}
         <Route path="/admin" element={<AdminHome />}>
           <Route index element={<Dashboard />} />
-
           <Route path="employee" element={<ManageEmployee />} />
 
           <Route path="area" element={<ManageArea />} />

@@ -12,18 +12,23 @@ import { completeOrder } from '../../../services/OrderService';
 import { getDiscountByDiscountCode, getAllDiscounts } from '../../../services/DiscountService';
 import {updateOrder} from "../../../services/OrderService";
 import {getEmployeeInfo} from "../../../services/EmployeeService";
+import LocalStorageService from '../../../services/LocalStorageService';
 
 
-function Pay({cartItems, updateState, onQuantityChange}){
+function Pay({cartItems, tableId, setNewStatus, onQuantityChange}){
     const [note, setNote] = useState(); // State để lưu ghi chú
     const [discountCode, setDiscountCode] = useState(); // State để lưu mã giảm giá
     const [existingDiscount, setExistingDiscount] = useState([]); // State để lưu mã giảm giá
     const [totalAmount, setTotalAmount] = useState(0); // State để lưu tổng số tiền
+    const [beforeDiscount, setBeforeDiscount] = useState(); // State để lưu tổng số tiền
     const printRef = useRef(); // Sử dụng useRef để tham chiếu đến phần HTML cần in
-    const {orderId} = useParams();
-    const {idTable} = useParams();
+    const {orderId} = useParams();  
     const navigate = useNavigate();
-    
+    const employee = LocalStorageService.getItem("userLogged");
+
+    useEffect(()=>{
+        console.log(tableId);
+    }, []);
 
     // Cập nhật tổng số tiền mỗi khi cartItems thay đổi
     useEffect(() => {
@@ -38,6 +43,7 @@ function Pay({cartItems, updateState, onQuantityChange}){
     // Tính tổng số tiền
     const calculateTotal = () => {
         const subtotal = cartItems.reduce((total, item) => total + item.foodPrice * item.quantity, 0);
+        setBeforeDiscount(subtotal);
         // Nếu đã tồn tại, tìm discount 
         // Áp dụng mã giảm giá nếu có
         let discount = 0;
@@ -68,24 +74,38 @@ function Pay({cartItems, updateState, onQuantityChange}){
     }
 
     const fetchComplteOrder = async () => {
-        await completeOrder(orderId);
+        try {    
+            // Gọi API để cập nhật đơn hàng
+            const order = {
+                employeeId: employee.id,
+                note: note,
+                tableId: tableId,
+                discountCode: discountCode
+            }
+
+            const response = await updateOrder(orderId, order);
+            if(response.data.code == 200){
+                await completeOrder(orderId);
+            }
+        } catch (error) {
+            if (error.response) {
+                console.error("Lỗi từ server:", error.response.data);
+            } else {
+                console.error("Lỗi không xác định:", error.message);
+            }        
+        }
     }
 
 
     const fetchUpdateOrder = async () => {
         try {    
             // Gọi API để cập nhật đơn hàng
-            
-
             const order = {
-                employeeId: '732a2d0a-a03b-4c23-b571-c52e7c638d2a',
-                note: 'Đây là note',
-                tableId: "668c4a0d-c4e8-4c9d-8e33-3b1e1f16f96a",
-                discountCode: existingDiscount.discountCode
+                employeeId: employee.id,
+                note: note,
+                tableId: tableId,
+                discountCode: discountCode
             }
-
-            console.log(order);
-
             const response = await updateOrder(orderId, order);
     
         } catch (error) {
@@ -96,6 +116,12 @@ function Pay({cartItems, updateState, onQuantityChange}){
             }        
         }
     }
+
+    // Hàm để cập nhật trạng thái amount
+    // const updateStatus = (newAmount) => {
+    //     setNewStatus(newAmount);
+    //     console.log(newAmount);
+    // };
 
 
     // print hóa đơn
@@ -127,11 +153,11 @@ function Pay({cartItems, updateState, onQuantityChange}){
 
         // Lưu file PDF
         doc.save('hoa_don.pdf');
+        // fetchUpdateOrder();
         fetchComplteOrder();
-        fetchUpdateOrder();
-        navigate(-1);
+        navigate("/");
         notification.success({
-            message: "Thành toán thành công",
+            message: "Thanh toán thành công",
             duration: 2,
           });
 
@@ -186,8 +212,13 @@ function Pay({cartItems, updateState, onQuantityChange}){
                     </div>
 
                     {/* Hiển thị tổng số tiền */}
-                    <button onClick={handlePayment} updateState="AVAILABLE" className="bg-red-500 text-lg text-white p-2 w-full flex  justify-between">
-                        <span>Thanh toán</span> 
+                    <button onClick={() => {
+                    handlePayment();
+                }}  className="bg-red-500 text-lg text-white p-2 w-full flex  justify-between" >
+                        <span >Thanh toán</span>
+                        {discountCode && (
+                            <span style={{ textDecoration: "line-through" }}>{(beforeDiscount / 1000).toLocaleString()}K</span>
+                        )}
                         <span>{totalAmount.toLocaleString()} VNĐ</span>
                     </button>
 

@@ -17,12 +17,12 @@ export const getAllOrderByShiftIdCompleted = (shiftId) => {
 }
 
 export const completeOrder = (orderId) => {
-    const response = BASE_URL.post(`/orders/${orderId}/complete`, orderId);
+    const response = BASE_URL.post(`/orders/${orderId}/complete`);
     return response;
 }
 
-export const updateOrder = (orderId) => {
-    const response = BASE_URL.put(`/orders/${orderId}`);
+export const updateOrder = (orderId, order) => {
+    const response = BASE_URL.put(`/orders/${orderId}`, order);
     return response;
 }
 

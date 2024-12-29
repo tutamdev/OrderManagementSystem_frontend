@@ -5,6 +5,8 @@ import { Link} from 'react-router-dom';
 const { Sider} = Layout;
 import { getAllCategories } from '../../services/CategoryService';
 import { useNavigate } from 'react-router-dom';
+import food from '../../assets/fast-food.png';
+import '../../assets/Side/Side.css';
 
 
 function Side({onCategoryClick}){
@@ -16,11 +18,12 @@ function Side({onCategoryClick}){
       {
         key: 'back',
         label: (
-          <button onClick={() => navigate(-1)} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
+          <button onClick={() => navigate(-1)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontWeight:'bold', color:'white' }}>
            Quay lại
           </button>
         ),
-        icon: < LeftOutlined />,
+        icon: < LeftOutlined style={{ color: 'white', fontWeight:'bold'}}/>,
+        className: 'menu-item',
       },
       {
         key: 'category',
@@ -29,7 +32,7 @@ function Side({onCategoryClick}){
         children: Array.isArray(categories) ? categories.map((category) => ({
           key: category.categoryId,
           label: category.name,
-          icon: <CoffeeOutlined />,
+          icon: <img src={food} alt="Category Item Icon" style={{ width: '16px', height: '16px' }} />,
           onClick: () => onCategoryClick(category.categoryId) // Thêm sự kiện onClick
         })) : []
       },

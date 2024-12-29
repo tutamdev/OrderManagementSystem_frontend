@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { createShift, getActiveShift } from '../../services/ShiftService';
 import { useNavigate } from 'react-router-dom';
+import LocalStorageService from '../../services/LocalStorageService';
 
 function Shift() {
     const navigate = useNavigate();
@@ -120,7 +121,8 @@ function Shift() {
 
     const handleOpenShift = async () => {
         try {
-            await createShift();
+            const response = await createShift();
+            LocalStorageService.setItem("shiftId", response.data.result.shiftId);
             toast.success('Mở ca làm việc thành công!');
             // checkCurrentShift(); // Refresh shift status
             navigate("/");

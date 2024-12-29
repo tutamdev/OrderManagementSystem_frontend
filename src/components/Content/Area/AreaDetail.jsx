@@ -2,24 +2,24 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { getTablesByAreaId } from "../../../services/TableService";
 import Table from "./Table";
+import { getAllArea } from "../../../services/AreaService";
 
-function AreaDetail({newStatus}){
+function AreaDetail(){
     const [tables, setTables] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [updateStatus, setUpdateStatus] = useState();
 
     // get areaId from url
     const {areaId: paramAreaId} = useParams();
-    const [areaId, setAreaId] = useState(paramAreaId);
-    useEffect(() => {
+    const [areaId, setAreaId] = useState(null);
+
+    useEffect(() => {       
         setAreaId(paramAreaId);
     }, [paramAreaId]);
 
     useEffect(() => {
         fetchTables();
-        setUpdateStatus(newStatus);
-    }, [areaId, updateStatus]);
-    
+    }, [areaId]);
+
     const fetchTables = async() => {
         try {
             setLoading(true);
@@ -36,7 +36,7 @@ function AreaDetail({newStatus}){
     
 
     return(
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {tables.map((table) => {
                 return <Table tableId={table.tableId} name={table.tableName} status={table.status}/>
             })}

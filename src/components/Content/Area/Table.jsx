@@ -8,10 +8,11 @@ import { useNavigate} from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { createOrder} from '../../../services/OrderService';
 import {getOrderNotCompleteByTableId} from '../../../services/TableService';
+import LocalStorageService from '../../../services/LocalStorageService';
 
 const StyledCard = styled.div`
-    width: 250px;
-    height: 250px;
+    width: 100%;
+    aspect-ratio: 1 / 1;
     border-radius: 10px;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     transition: all 0.3s ease;
@@ -46,11 +47,12 @@ function Table({tableId, name, status}){
     const [orderId, setOrderId] = useState();
     const [loading, setLoading] = useState(false);
 
+    const employee = LocalStorageService.getItem("userLogged");
     const fetchOrderId = async () => {
         try {
             setLoading(true); // Set loading to true while creating the order
             const response = await createOrder({
-                "employeeId": "732a2d0a-a03b-4c23-b571-c52e7c638d2a",
+                "employeeId": employee.id,
                 "note": "Note",
                 "tableId": tableId,
                 "discountCode": ""
@@ -143,10 +145,10 @@ function Table({tableId, name, status}){
 
     return(
         <StyledCard status={status} className='relative mb-4' onClick={handleTableClick}>
-            <h2 className='text-center mt-4 font-semibold text-lg'>{name}</h2>
+            <h2 className='text-center mt-4 font-semibold text-lg' style={{fontSize:'1.5vw'}}>{name}</h2>
             {/* inset-0 used to div cover the whole card */}
             <div className='absolute inset-0 flex items-center justify-center '>
-                <FontAwesomeIcon icon={faUtensils} size="2x" />
+                <FontAwesomeIcon icon={faUtensils} style={{fontSize:'2vw'}} />
             </div>
         </StyledCard>
     );

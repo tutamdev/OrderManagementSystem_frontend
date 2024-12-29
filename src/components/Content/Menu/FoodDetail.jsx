@@ -5,8 +5,8 @@ import { getOrderDetailsByOrderId, createOrderDetail, updateOrderDetail } from '
 
 
 const StyledCard = styled.div`
-    width: 250px;
-    height: 250px;
+    width: 100%;
+    aspect-ratio: 1 / 1;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     overflow: hidden;
@@ -34,6 +34,7 @@ const StyledCard = styled.div`
         padding: 4px 8px;
         border-bottom-left-radius: 8px;
         font-weight: bold;
+        font-size: 1vw;
         border: 1px solid #ccc;
     }
 
@@ -44,7 +45,7 @@ const StyledCard = styled.div`
         background-color: rgba(255, 255, 255, 0.9);
         text-align: center;
         padding: 8px 0;
-        font-size: 1.1rem;
+        font-size: 1vw;
         font-weight: 600;
     }
     background-color: ${props => {
