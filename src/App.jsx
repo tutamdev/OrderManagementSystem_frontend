@@ -13,7 +13,7 @@ import Order from "./components/Content/Order/Order";
 import ShiftMonitor from "./pages/Shift/ShiftMonitor";
 import ShiftMonitorDetail from "./pages/Shift/ShiftMonitorDetail";
 
- // hoặc import theo phiên bản antd của bạn
+// hoặc import theo phiên bản antd của bạn
 
 // Admin
 import AdminHome from "./pages/Admin/AdminHome";
@@ -29,6 +29,7 @@ import { ManageFood } from "./admin_components/Contents/Food/ManageFood";
 import { ManageOrder } from "./admin_components/Contents/Order/ManageOrder";
 import { ManageOrderDetail } from "./admin_components/Contents/Order/ManageOrderDetail";
 import { ManageFoodDetail } from "./admin_components/Contents/Food/ManageFoodDetail";
+import AdminRouteGuard from "./pages/Admin/AdminRouteGuard";
 
 
 export default function App() {
@@ -36,35 +37,28 @@ export default function App() {
     <>
       <Routes>
         {/* area and table */}
-        <Route path="/" element={<Home />} >       
+        <Route path="/" element={<Home />} >
           <Route path="/areas/:areaId" element={<AreaDetail />}>
           </Route>
         </Route>
-
-      {/* menu */}
         <Route path="/menu" element={<Menu />} >
           <Route path="categories/:categoryId" element={<MenuDetail />} />
         </Route>
-
-        {/* orders */}
         <Route path="/table/:tableId/orders/:orderId" element={<Order />} />
-
-        {/* shift */}
-        <Route path="/shifts" element={<Shift/>}/>
-        <Route path="/shift-monitor" element={<ShiftMonitor/>}/>
-        <Route path="/shift-monitor-detail" element={<ShiftMonitorDetail/>}/>
-
-
-
-
+        <Route path="/shifts" element={<Shift />} />
+        <Route path="/shift-monitor" element={<ShiftMonitor />} />
+        <Route path="/shift-monitor-detail" element={<ShiftMonitorDetail />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="*" element={<ErrorPage />} />
-          
         <Route path="/areas/:areaId" element={<AreaDetail />} />
 
         {/* Admin */}
-        <Route path="/admin" element={<AdminHome />}>
+        <Route path="/admin" element={
+          <AdminRouteGuard>
+            <AdminHome />
+          </AdminRouteGuard>
+        }>
           <Route index element={<Dashboard />} />
           <Route path="employee" element={<ManageEmployee />} />
 
@@ -82,11 +76,11 @@ export default function App() {
           <Route path="discount" element={<ManageDiscount />} />
 
           <Route path="profile" element={<Profile />} />
-
         </Route>
+        {/* Admin */}
       </Routes>
 
-      <ToastContainer 
+      <ToastContainer
         position="top-right"
         autoClose={5000}
         hideProgressBar={false}

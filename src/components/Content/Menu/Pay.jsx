@@ -6,7 +6,6 @@ import { useState, useEffect, useRef } from 'react';
 import { Button, Form, Input, notification, Popconfirm } from "antd";
 import { jsPDF } from 'jspdf';
 import 'jspdf-autotable'; // Nếu bạn sử dụng autotable
-import font from '../../../assets/Roboto/Roboto-Regular.ttf';
 import { useNavigate, useParams } from 'react-router-dom';
 import { completeOrder, deleteOrder } from '../../../services/OrderService';
 import { getDiscountByDiscountCode, getAllDiscounts } from '../../../services/DiscountService';
@@ -132,7 +131,8 @@ function Pay({ cartItems, tableId, setNewStatus, onQuantityChange }) {
         // doc.addFileToVFS('Roboto-Regular.ttf', font);
         // doc.addFont('Roboto-Regular.ttf', 'Roboto', 'normal');
         // doc.setFont('Roboto'); // Sử dụng font chữ Roboto
-
+        doc.addFileToVFS('');
+        doc.add('Roboto-Regular.ttf', 'Roboto', 'normal');
         // Thêm tiêu đề
         doc.setFontSize(20);
         doc.text('Order Payment', 20, 20);
