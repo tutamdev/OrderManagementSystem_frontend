@@ -26,4 +26,12 @@ export const updateOrder = (orderId, order) => {
     return response;
 }
 
+export const getOrderNotCompleteByTableId = (tableId) => {
+    const response = BASE_URL.get(`/tables/${tableId}/order`);
+    return response;
+}
 
+export const deleteOrder = (orderId) => {
+    const response = BASE_URL.delete(`/orders/${orderId}`);
+    return response;
+}
