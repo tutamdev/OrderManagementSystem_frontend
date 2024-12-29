@@ -4,33 +4,47 @@ import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../services/AuthService";
 import LocalStorageService from "../../services/LocalStorageService";
 import { getEmployeeInfo } from "../../services/EmployeeService";
+import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
   useEffect(() => {
     document.title = "Đăng nhập";
+    if (userLogged && token) {
+      if (userLogged.role === "ADMIN")
+        window.location.href = "/admin";
+      else window.location.href = "/shifts";
+    }
   }, []);
-
   const navigate = useNavigate();
+  const userLogged = LocalStorageService.getItem("userLogged");
+  const token = LocalStorageService.getItem("token");
 
   const handleLogin = async (account) => {
     await login(account)
       .then((response) => {
         const token = response.data.result.token;
         LocalStorageService.setItem("token", token);
-        fetchEmployeeInfo();
+        return fetchEmployeeInfo();
+
+      }).then(() => {
         notification.success({
           message: "Đăng nhập thành công",
           description: "Chào mừng đến với hệ thống!",
           duration: 4,
         });
-        navigate("/shifts");
+        if (LocalStorageService.getItem("userLogged").role === "ADMIN") {
+          navigate("/admin"); // Sử dụng navigate để chuyển hướng
+        } else {
+          navigate("/shifts"); // Sử dụng navigate để chuyển hướng
+        }
       })
       .catch(() => {
         notification.error({
           message: "Đăng nhập không thành công!",
           description: "Tài khoản hoặc mật khẩu không chính xác!",
         });
-      });
+      })
+
   };
 
   const fetchEmployeeInfo = async () => {
@@ -38,7 +52,6 @@ const Login = () => {
       .then((response) => {
         const EmployeeInfo = response.data.result;
         LocalStorageService.setItem("userLogged", EmployeeInfo);
-        console.log(LocalStorageService.getItem("userLogged"));
         return response.data.result;
       })
       .catch((error) => {

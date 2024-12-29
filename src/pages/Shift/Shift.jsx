@@ -16,8 +16,9 @@ function Shift() {
     }, []);
 
     const checkCurrentShift = async () => {
-        try {        
+        try {
             const response = await getActiveShift();
+            LocalStorageService.setItem("shiftId", response.data.result.shiftId)
             setCurrentShift(response.data.result);
             // Check if there is no active shift and create a new one
             if (response.data.code === 1012) {
@@ -28,7 +29,7 @@ function Shift() {
             else {
                 // If there is an active shift, set enable to true
                 setEnable(true);
-            }          
+            }
         } catch (error) {
             console.error('Error checking shift:', error);
         } finally {
