@@ -1,0 +1,17 @@
+.menu-item {
+    background-color: #FF7F3E;
+  }
+
+.menu-text{
+    font-weight: bold;
+    color: white;
+}
+
+/* Side.css */
+.ant-layout-sider-trigger {
+  background-color: #BFECFF !important; /* Màu nền của nút collapsible */
+}
+
+.ant-layout-sider-trigger:hover {
+  background-color: #FF6F47; /* Màu nền khi hover */
+}

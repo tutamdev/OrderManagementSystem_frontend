@@ -6,6 +6,8 @@ import logo from '../../assets/logo.jfif';
 import avatar from '../../assets/avatar.jpg';
 import {getEmployeeInfo} from '../../services/EmployeeService';
 import { Link} from 'react-router-dom';
+import { Button } from 'antd';
+
 
 
 function Nav(){
@@ -68,6 +70,14 @@ function Nav(){
                             style={{ height: '40px', marginRight: '16px', marginLeft:'10px', borderRadius:'50%', }} // Tùy chỉnh kích thước logo
                         />
                     </div>
+                    <div className="flex items-center">
+                        <Link to="/login">
+                            <Button style={{marginRight:'15px', backgroundColor:'#F96E2A'}} type="primary" >
+                                Logout
+                            </Button>
+                        </Link>
+                    </div>
+                    
                 </div>
 
             </Menu>

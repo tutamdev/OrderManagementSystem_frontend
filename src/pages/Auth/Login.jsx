@@ -12,16 +12,15 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const handleLogin = async (acount) => {
-    await login(acount)
+  const handleLogin = async (account) => {
+    await login(account)
       .then((response) => {
-        // Khi đăng nhập thành công, lưu token trong LocalStorage và chuyển hướng
         const token = response.data.result.token;
         LocalStorageService.setItem("token", token);
         fetchEmployeeInfo();
         notification.success({
           message: "Đăng nhập thành công",
-          description: "Chào mừng đến với bình nguyên vô tận!",
+          description: "Chào mừng đến với hệ thống!",
           duration: 4,
         });
         navigate("/shifts");
@@ -46,70 +45,100 @@ const Login = () => {
         console.log(error?.response);
       });
   };
+
   const handleLoginFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
 
   return (
-    <>
-      <div className="flex justify-center items-center h-screen">
-        <div className="border px-5 py-5 rounded-xl shadow-lg">
-          <h3 className="text-center text-[22px] font-semibold uppercase py-3">
-            Đăng nhập
-          </h3>
-          <Form
+    <div className="relative flex justify-center items-center min-h-screen bg-gradient-to-r from-green-400 to-blue-500">
+      {/* Background Icons */}
+      <div className="absolute inset-0 pointer-events-none">
+        {[...Array(20)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute transform scale-50 opacity-20"
             style={{
-              minWidth: 350,
-              maxWidth: 800,
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+              fontSize: `${Math.random() * 60 + 40}px`,
+              color: `rgba(255, 255, 255, 0.2)`,
             }}
-            onFinish={handleLogin}
-            onFinishFailed={handleLoginFailed}
           >
-            <Form.Item
-              name="username"
-              rules={[
-                {
-                  required: true,
-                  message: "Username không được để trống!",
-                },
-              ]}
-            >
-              <Input placeholder="Username" />
-            </Form.Item>
-
-            <Form.Item
-              name="password"
-              rules={[
-                {
-                  required: true,
-                  message: "Mật khẩu không được để trống!",
-                },
-              ]}
-            >
-              <Input.Password placeholder="Password" />
-            </Form.Item>
-
-            <Form.Item>
-              <Button
-                type="default"
-                variant="outlined"
-                htmlType="submit"
-                block
-                style={{ background: "#00b96b", color: "#fff" }}
-              >
-                Đăng nhập
-              </Button>
-            </Form.Item>
-            <div className="text-center text-[16px]">
-              <span>Bạn chưa có tài khoản? </span>
-              <Link to="/register">
-                <span className="text-blue-600">Đăng ký</span>
-              </Link>
-            </div>
-          </Form>
-        </div>
+            {i % 2 === 0 ? "🍔" : "☕"}
+          </div>
+        ))}
       </div>
-    </>
+
+      {/* Login Card */}
+      <div className="bg-white p-8 rounded-2xl shadow-lg w-[400px] relative z-10">
+        <h2 className="text-center text-2xl font-bold text-gray-700 mb-6 uppercase">
+          Đăng nhập
+        </h2>
+        <Form
+          name="loginForm"
+          onFinish={handleLogin}
+          onFinishFailed={handleLoginFailed}
+          layout="vertical"
+        >
+          <Form.Item
+            name="username"
+            rules={[
+              {
+                required: true,
+                message: "Username không được để trống!",
+              },
+            ]}
+          >
+            <Input
+              placeholder="Tên đăng nhập"
+              size="large"
+              className="rounded-md"
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="password"
+            rules={[
+              {
+                required: true,
+                message: "Mật khẩu không được để trống!",
+              },
+            ]}
+          >
+            <Input.Password
+              placeholder="Mật khẩu"
+              size="large"
+              className="rounded-md"
+            />
+          </Form.Item>
+
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              block
+              size="large"
+              className="rounded-md"
+              style={{
+                background: "linear-gradient(to right, #00b96b, #0071e3)",
+                border: "none",
+                color: "#fff",
+              }}
+            >
+              Đăng nhập
+            </Button>
+          </Form.Item>
+
+          <div className="text-center mt-4">
+            <span className="text-gray-600">Bạn chưa có tài khoản? </span>
+            <Link to="/register" className="text-blue-600 font-medium">
+              Đăng ký
+            </Link>
+          </div>
+        </Form>
+      </div>
+    </div>
   );
 };
 

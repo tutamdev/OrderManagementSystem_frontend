@@ -7,9 +7,15 @@ import { Layout } from "antd";
 const { Content} = Layout;
 import { getOrderDetailsByOrderId, updateOrderDetail } from '../../../services/OrderDetailService';
 
-function Order(){
+function Order({setNewStatus}){
     const [cartItems, setCartItems] = useState([]);
     const {orderId} = useParams();
+    const {tableId} = useParams();
+
+    useEffect(()=>{
+        console.log(tableId);
+    }, []);
+
     // useEffect để fetch order details khi orderId thay đổi
     useEffect(() => {
         fetchOrderDetail(orderId);
@@ -96,7 +102,7 @@ function Order(){
                         {/* when fooddetail component is clicked, call handleAddToCart */}
                         <Food onAddToCart={handleAddToCart} orderId = {orderId}/>
                         {/* cartItems is the array of items in the cart, onQuantityChange is the function to handle quantity change */}
-                        <Pay cartItems={cartItems} onQuantityChange={handleQuantityChange}/>
+                        <Pay cartItems={cartItems} tableId={tableId} setNewStatus={setNewStatus} onQuantityChange={handleQuantityChange}/>
                     </div>
                     </Content>
                 </Layout>

@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { AppstoreOutlined, BuildOutlined, ShopOutlined} from '@ant-design/icons';
+import { AppstoreOutlined, BuildOutlined, ShopOutlined, CalendarOutlined} from '@ant-design/icons';
 import { Menu, Layout } from 'antd';
 import { getAllArea} from '../../services/AreaService';
 import { Link} from 'react-router-dom';
 const { Sider} = Layout;
-
-
+import '../../assets/Side/Side.css';
 
 
 function Side(){
@@ -15,7 +14,8 @@ function Side(){
     const items = [
       {
         key: 'sale',
-        label: <span style={{fontWeight:'bold'}}>Bán hàng</span>,
+        label: <span className='menu-text'>Bán hàng</span>,
+        className: 'menu-item',
       },
       {
         key: 'areas',
@@ -34,7 +34,8 @@ function Side(){
       },
       {
         key: 'shift',
-        label: <Link to={`/shift-monitor`} style={{fontWeight:'bold'}}>{"Ca làm việc"}</Link> ,
+        label: <Link to={`/shift-monitor`}><span style={{color:'#F96E2A', fontWeight:'bold'}}>Ca làm việc</span></Link> ,
+        icon: <CalendarOutlined style={{ color: '#F96E2A'}} />,
       },
     ];
 
@@ -55,8 +56,8 @@ function Side(){
     };
 
     return(
-        <Sider style={{height: '100vh', position:'sticky', top:'0'}}>
-            <Menu
+        <Sider style={{height: '100vh', position:'sticky', top:'0'}} collapsible>
+            <Menu 
             style={{ height: '100%'   // Đặt chiều cao của Sider bằng toàn bộ chiều cao của màn hình
                 }}
             defaultSelectedKeys={['1']}

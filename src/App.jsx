@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home/Home";
 import Register from "./pages/Auth/Register";
@@ -46,7 +46,7 @@ export default function App() {
         <Route path="*" element={<ErrorPage />} />
 
 
-        <Route path="/areas/:areaId" element={<AreaDetail />} />
+        {/* <Route path="/areas/:areaId" element={<AreaDetail />} /> */}
       </Routes>
 
       <ToastContainer 
