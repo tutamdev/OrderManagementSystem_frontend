@@ -1,0 +1,25 @@
+/* Add this CSS to ensure each column is 250px */
+@media (min-width: 1024px) {
+    .grid-cols-4 > div {
+      width: 250px;
+    }
+  }
+
+
+  .fixed-container {
+    position: fixed; /* Đặt vị trí cố định */
+    top: 100px; /* Căn chỉnh từ trên cùng */
+    right: 300px; /* Căn chỉnh từ bên phải */
+    bottom: 0; /* Căn chỉnh từ dưới cùng */
+    left: 200px; /* Căn chỉnh từ bên trái */
+    overflow-y: auto; /* Thêm thanh cuộn dọc */
+}
+
+.pay-container {
+  position: fixed;
+  top: 100px;
+  right: 0; /* Đặt container Pay bên phải */
+  bottom: 0;
+  width: 300px; /* Chiều rộng cố định cho Pay */
+  overflow-y: auto;
+}
