@@ -38,7 +38,7 @@ function Nav(){
 
 
     return(
-        <Header style={{backgroundColor:'white', padding:'20px 0px', height: "100px"}}>
+        <Header style={{backgroundColor:'white', height: "70px"}}>
             <div className="logo" />
             <Menu  theme="light" mode="horizontal" defaultSelectedKeys={['1']}>
                 <Menu.Item key="logo" disabled style={{ cursor: 'default' }}> 
@@ -72,8 +72,8 @@ function Nav(){
                     </div>
                     <div className="flex items-center">
                         <Link to="/login">
-                            <Button style={{marginRight:'15px', backgroundColor:'#F96E2A'}} type="primary" >
-                                Logout
+                            <Button style={{backgroundColor:'#F96E2A'}} type="primary" >
+                                Đăng xuất
                             </Button>
                         </Link>
                     </div>
