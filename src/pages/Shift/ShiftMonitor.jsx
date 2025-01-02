@@ -30,10 +30,10 @@ const ShiftMonitor= () => {
 
 
     const columns = [
-        { title: 'Mã hóa đơn', dataIndex: 'invoiceId', key: 'invoiceId' },
-        { title: 'Số lượng món', dataIndex: 'quantity', key: 'quantity' },
-        { title: 'Thời gian thanh toán', dataIndex: 'paymentTime', key: 'paymentTime' },
-        { title: 'Tổng tiền', dataIndex: 'total', key: 'total', render: total => `${total} VNĐ` },
+        { title: 'Ma hoa don', dataIndex: 'invoiceId', key: 'invoiceId' },
+        { title: 'So luong mon', dataIndex: 'quantity', key: 'quantity' },
+        { title: 'Thoi gian thanh toan', dataIndex: 'paymentTime', key: 'paymentTime' },
+        { title: 'Tong tien', dataIndex: 'total', key: 'total', render: total => `${total} VNĐ` },
     ];
 
     useEffect(() => {
@@ -42,12 +42,7 @@ const ShiftMonitor= () => {
 
     useEffect(() => {
         fetchQuantity();
-        console.log(invoiceDetails);
     }, [orders]);
-
-    useEffect(() => {
-        console.log("Change");
-    }, [invoiceDetails]);
 
     const fetchTotalPrice = async ()=>{
         try {
@@ -64,57 +59,48 @@ const ShiftMonitor= () => {
     };
 
     // print hóa đơn
-const handlePayment = () => {
-    const doc = new jsPDF();
-
-    // Thêm tiêu đề, căn giữa
-    const title = 'Chi tiet hoa don ca';
-    const pageWidth = doc.internal.pageSize.width; // Lấy chiều rộng của trang
-    const titleWidth = doc.getTextWidth(title); // Lấy chiều rộng của văn bản
-    const titleX = (pageWidth - titleWidth - 40) / 2; // Tính toán vị trí X để căn giữa
-    doc.setFont('Roboto', 'bold');
-    doc.setFontSize(30);
-    doc.text(title, titleX, 20);
-
-
-    // Thêm thông tin chi tiết hóa đơn (Table + Area)
-    doc.setFont('Roboto', 'normal');
-    doc.setFontSize(20);
-    doc.text(`Doanh thu cua ca: ${revenue} VND`, 20, 30);
-    doc.text(`So luong mon da ban: ${quantityFood}`, 20, 40);
-
-
-    // // Cột cho bảng
-    // const columns = [
-    //     { title: 'Mã hóa đơn', dataIndex: 'invoiceId', key: 'invoiceId' },
-    //     { title: 'Số lượng món', dataIndex: 'quantity', key: 'quantity' },
-    //     { title: 'Thời gian thanh toán', dataIndex: 'paymentTime', key: 'paymentTime' },
-    //     { title: 'Tổng tiền', dataIndex: 'total', key: 'total'},
-    // ];
-
-    // // Chuyển đổi dữ liệu để hiển thị tổng tiền với VNĐ
-    // const rows = invoiceDetails.map(item => ({
-    //     invoiceId: item.invoiceId, // Make sure data contains invoiceId
-    //     quantity: item.quantity,   // Make sure data contains quantity
-    //     paymentTime: item.paymentTime,
-    //     total: `${item.total} VND`, // Định dạng tổng tiền
-    // }));
-
-    // // Thêm bảng vào PDF
-    // doc.autoTable({
-    //     head: [columns.map(col => col.title)], // Chỉ cần title của các cột
-    //     body: rows,
-    //     startY: 30, // Vị trí bắt đầu của bảng
-    // });
-
-    // Lưu file PDF
-    doc.save('hoa_don.pdf');
-    fetchShift();
-    notification.success({
-        message: "Đóng ca thành công",
-        duration: 2,
-    });
-};
+    const handlePayment = () => {
+        if (!invoiceDetails || invoiceDetails.length === 0) {
+            notification.error({ message: "Không có dữ liệu hóa đơn để in", duration: 2 });
+            return;
+        }
+    
+        const doc = new jsPDF();
+    
+        // Thêm tiêu đề
+        const title = 'Chi tiet hoa don ca';
+        const pageWidth = doc.internal.pageSize.width;
+        const titleWidth = doc.getTextWidth(title);
+        const titleX = (pageWidth - titleWidth) / 2;
+        doc.setFont('Roboto', 'bold');
+        doc.setFontSize(30);
+        doc.text(title, titleX, 20);
+    
+        // Thêm thông tin doanh thu và số lượng món
+        doc.setFont('Roboto', 'normal');
+        doc.setFontSize(18);
+        doc.text(`Doanh thu cua ca: ${revenue} VND`, 20, 30);
+        doc.text(`So luong mon da ban: ${quantityFood}`, 20, 40);
+    
+        // Thêm bảng
+        // lỗi sửa trực tiếp vào body
+        doc.autoTable({
+            head: [columns.map(col => col.title)],
+            body: invoiceDetails.map(item => [
+                item.invoiceId,
+                item.quantity,
+                item.paymentTime,
+                `${item.total} VND`,
+            ]),
+            startY: 50,
+        });
+    
+        // Lưu file PDF
+        doc.save('hoa_don.pdf');
+        fetchShift();
+        notification.success({ message: "Đóng ca thành công", duration: 2 });
+    };
+    
 
 
     const fetchQuantity = async ()=>{
