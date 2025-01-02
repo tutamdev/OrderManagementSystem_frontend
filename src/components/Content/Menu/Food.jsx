@@ -80,7 +80,7 @@ function Food({onAddToCart, orderId}){
                         <h2 className='text-2xl font-bold text-white bg-orange-500 border-b-2 border-gray-200 p-2'>
                             {category.name}
                         </h2>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1 ">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1">
                             {foods
                                 .filter(food => food.category.categoryId === category.categoryId)
                                 .map(food => (

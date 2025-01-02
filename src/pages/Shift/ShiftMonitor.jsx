@@ -42,15 +42,18 @@ const ShiftMonitor= () => {
 
     useEffect(() => {
         fetchQuantity();
+        console.log(invoiceDetails);
     }, [orders]);
+
+    useEffect(() => {
+        console.log("Change");
+    }, [invoiceDetails]);
 
     const fetchTotalPrice = async ()=>{
         try {
             // setShiftId((await getActiveShift()).data.result.shiftId);
             const response = await getAllOrderByShiftIdCompleted(shiftId); // Giả sử getAllOrders là một hàm async
             setOrders(response.data.result);
-            console.log(response);
-
             // Tính tổng doanh thu ngay sau khi nhận được dữ liệu
             const total = response.data.result.reduce((acc, order) => acc + order.totalPrice - order.discountValue, 0);
             
@@ -61,57 +64,62 @@ const ShiftMonitor= () => {
     };
 
     // print hóa đơn
-    const handlePayment = () => {
-        const doc = new jsPDF();
-        
-        // Thêm font chữ
-        // doc.addFileToVFS('Roboto-Regular.ttf', font);
-        // doc.addFont('Roboto-Regular.ttf', 'Roboto', 'normal');
-        // doc.setFont('Roboto'); // Sử dụng font chữ Roboto
-        
-        // Thêm tiêu đề
-        doc.setFontSize(20);
-        doc.text('Chi tiết hóa đơn', 20, 20);
+const handlePayment = () => {
+    const doc = new jsPDF();
 
-        // Sử dụng dữ liệu từ invoiceDetails
-    const data = invoiceDetails; // Dữ liệu hóa đơn từ state
+    // Thêm tiêu đề, căn giữa
+    const title = 'Chi tiet hoa don ca';
+    const pageWidth = doc.internal.pageSize.width; // Lấy chiều rộng của trang
+    const titleWidth = doc.getTextWidth(title); // Lấy chiều rộng của văn bản
+    const titleX = (pageWidth - titleWidth - 40) / 2; // Tính toán vị trí X để căn giữa
+    doc.setFont('Roboto', 'bold');
+    doc.setFontSize(30);
+    doc.text(title, titleX, 20);
 
-    // Cột cho bảng
-    const columns = [
-        { title: 'Mã hóa đơn', dataKey: 'invoiceId' },
-        { title: 'Số lượng món', dataKey: 'quantity' },
-        { title: 'Thời gian thanh toán', dataKey: 'paymentTime' },
-        { title: 'Tổng tiền', dataKey: 'total' },
-    ];
 
-    // Chuyển đổi dữ liệu để hiển thị tổng tiền với VNĐ
-    const rows = data.map(item => ({
-        ...item,
-        total: `${item.total} VNĐ`, // Định dạng tổng tiền
-    }));
+    // Thêm thông tin chi tiết hóa đơn (Table + Area)
+    doc.setFont('Roboto', 'normal');
+    doc.setFontSize(20);
+    doc.text(`Doanh thu cua ca: ${revenue} VND`, 20, 30);
+    doc.text(`So luong mon da ban: ${quantityFood}`, 20, 40);
 
-    // Thêm bảng vào PDF
-    doc.autoTable({
-        head: [columns],
-        body: rows,
-        startY: 30, // Vị trí bắt đầu của bảng
+
+    // // Cột cho bảng
+    // const columns = [
+    //     { title: 'Mã hóa đơn', dataIndex: 'invoiceId', key: 'invoiceId' },
+    //     { title: 'Số lượng món', dataIndex: 'quantity', key: 'quantity' },
+    //     { title: 'Thời gian thanh toán', dataIndex: 'paymentTime', key: 'paymentTime' },
+    //     { title: 'Tổng tiền', dataIndex: 'total', key: 'total'},
+    // ];
+
+    // // Chuyển đổi dữ liệu để hiển thị tổng tiền với VNĐ
+    // const rows = invoiceDetails.map(item => ({
+    //     invoiceId: item.invoiceId, // Make sure data contains invoiceId
+    //     quantity: item.quantity,   // Make sure data contains quantity
+    //     paymentTime: item.paymentTime,
+    //     total: `${item.total} VND`, // Định dạng tổng tiền
+    // }));
+
+    // // Thêm bảng vào PDF
+    // doc.autoTable({
+    //     head: [columns.map(col => col.title)], // Chỉ cần title của các cột
+    //     body: rows,
+    //     startY: 30, // Vị trí bắt đầu của bảng
+    // });
+
+    // Lưu file PDF
+    doc.save('hoa_don.pdf');
+    fetchShift();
+    notification.success({
+        message: "Đóng ca thành công",
+        duration: 2,
     });
+};
 
-
-        // Lưu file PDF
-        doc.save('hoa_don.pdf');
-        fetchShift();
-        notification.success({
-            message: "Đóng ca thành công",
-            duration: 2,
-          });
-
-    };
 
     const fetchQuantity = async ()=>{
         try {
             // Tạo một mảng các Promise từ các yêu cầu bất đồng bộ
-            console.log(orders);
             const promises = orders.map(async (order) => {
                 const response = await getOrderDetailsByOrderId(order.orderId); // Giả sử order có thuộc tính id   
                 const totalQuantity = response.data.result.reduce((acc, food) => acc + food.quantity, 0);

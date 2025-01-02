@@ -4,15 +4,15 @@ import { getTablesByAreaId } from "../../../services/TableService";
 import Table from "./Table";
 import { getAllArea } from "../../../services/AreaService";
 
-function AreaDetail(){
+function AreaDetail() {
     const [tables, setTables] = useState([]);
     const [loading, setLoading] = useState(true);
 
     // get areaId from url
-    const {areaId: paramAreaId} = useParams();
+    const { areaId: paramAreaId } = useParams();
     const [areaId, setAreaId] = useState(null);
 
-    useEffect(() => {       
+    useEffect(() => {
         setAreaId(paramAreaId);
     }, [paramAreaId]);
 
@@ -20,7 +20,7 @@ function AreaDetail(){
         fetchTables();
     }, [areaId]);
 
-    const fetchTables = async() => {
+    const fetchTables = async () => {
         try {
             setLoading(true);
             const response = await getTablesByAreaId(areaId);
@@ -28,17 +28,17 @@ function AreaDetail(){
         } catch (error) {
             console.log('Error fetching tables: ', error)
         }
-        finally{
+        finally {
             setLoading(false);
         }
     };
 
-    
 
-    return(
+
+    return (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {tables.map((table) => {
-                return <Table tableId={table.tableId} name={table.tableName} status={table.status}/>
+                return <Table key={table.tableId} tableId={table.tableId} name={table.tableName} status={table.status} />
             })}
         </div>
     );
