@@ -1,0 +1,66 @@
+.revenue-container {
+    background-color: white; /* Màu nền nhẹ, xanh nhạt */
+    border: 1px solid white; /* Đường viền màu xanh đậm */
+    border-radius: 10px; /* Góc mềm mại hơn */
+    padding: 20px; /* Khoảng cách bên trong */
+    text-align: center; /* Căn giữa nội dung */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Đổ bóng mạnh hơn */
+    max-width: 400px; /* Chiều rộng tối đa */
+    min-width: 300px;
+    margin: 20px auto; /* Căn giữa theo chiều ngang */
+    font-family: 'Arial', sans-serif; /* Font chữ */
+    transition: transform 0.3s, box-shadow 0.3s; /* Hiệu ứng chuyển động */
+}
+
+.revenue-container:hover {
+    transform: translateY(-5px); /* Nâng lên khi hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Đổ bóng mạnh hơn khi hover */
+}
+
+.revenue-title {
+    font-size: 16px; /* Kích thước chữ tiêu đề lớn hơn */
+    margin-bottom: 10px; /* Khoảng cách dưới tiêu đề */
+    text-align: start;
+}
+
+.revenue-value {
+    font-size: 24px; /* Kích thước chữ giá trị lớn hơn */
+    color: #4ae9c1; /* Màu chữ giá trị xanh đậm */
+    font-weight: bold; /* Chữ đậm */
+    text-align: end;
+}
+
+.button-container {
+    display: flex; /* Sử dụng flexbox để căn chỉnh các nút */
+    gap: 10px; /* Khoảng cách giữa các nút */
+    margin-top: 20px; /* Khoảng cách phía trên */
+}
+
+.btn {
+    padding: 10px 20px; /* Padding cho nút */
+    border: none; /* Bỏ viền */
+    border-radius: 5px; /* Bo góc */
+    font-size: 16px; /* Kích thước chữ */
+    cursor: pointer; /* Con trỏ chuột khi hover */
+    transition: background-color 0.3s, transform 0.2s; /* Hiệu ứng chuyển đổi */
+}
+
+.btn-confirm {
+    background-color: #4CAF50; /* Màu nền cho nút "Chốt ca" */
+    color: white; /* Màu chữ */
+}
+
+.btn-confirm:hover {
+    background-color: #45a049; /* Màu nền khi hover */
+    transform: scale(1.05); /* Phóng to một chút khi hover */
+}
+
+.btn-print {
+    background-color: #2196F3; /* Màu nền cho nút "Chốt ca và in đơn" */
+    color: white; /* Màu chữ */
+}
+
+.btn-print:hover {
+    background-color: #1e88e5; /* Màu nền khi hover */
+    transform: scale(1.05); /* Phóng to một chút khi hover */
+}

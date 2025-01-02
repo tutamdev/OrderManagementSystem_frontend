@@ -2,7 +2,6 @@ import axios from "axios";
 import LocalStorageService from "./LocalStorageService";
 import { refreshToken } from "./AuthService";
 import { jwtDecode } from "jwt-decode";
-import { notification } from "antd";
 
 // Cấu hình axios HTTP
 const BASE_URL = axios.create({
@@ -11,6 +10,9 @@ const BASE_URL = axios.create({
         "Content-Type": "application/json"
     }
 });
+
+// Biến cờ để kiểm soát việc hiển thị alert
+let isTokenInvalid = false;
 
 // Thực hiện trước khi gửi request
 BASE_URL.interceptors.request.use(
@@ -21,44 +23,50 @@ BASE_URL.interceptors.request.use(
         const requestURL = config.url;
         const hasAuthURL = authURL.some(url => requestURL.includes(url));
         // Nếu có thì trả về một config không kèm token
-        if(hasAuthURL) return config;
-        
+        if (hasAuthURL) return config;
+
         /**
          * Kiểm tra token có trong LocalStorage chưa! 
-         * Nếu không có thì chuyển hướng về home
-         * Nếu có thì đính kèm token với headers
+         * Nếu không có thì chuyển hướng về trang login
          */
         const token = LocalStorageService.getItem("token");
-        if (!token) window.location.href = "/";
+
+        if (!token) {
+            if (!isTokenInvalid) {
+                isTokenInvalid = true; // Đánh dấu token không hợp lệ
+                LocalStorageService.clear();
+                alert("Phiên đăng nhập đã kết thúc. Vui lòng đăng nhập lại!"); // Sử dụng alert
+                window.location.href = "/login";
+            }
+            return Promise.reject(new Error("Token không tồn tại"));
+        }
+
         /**
          * Nếu token có exp nhỏ hơn hiện tại, ta tiến hành refresh token
          * Nếu trả về là token thì set giá trị token mới, nếu trả về là 401 thì remove token cũ và logout
          */
-
         const decodedToken = jwtDecode(token);
         const currentTime = new Date().getTime();
-        if(decodedToken.exp < Math.floor(currentTime/1000)) {
-            // Thử refresh token
-               await refreshToken(token)
-               .then((response) => {
-                    const newToken = response?.data?.result.token;
-                    // console.log("NEW TOKEN", newToken)
-                    LocalStorageService.setItem("token", newToken);
-                    config.headers.Authorization = `Bearer ${newToken}`;
-               })
-               .catch(error => {
-                    notification.warning({
-                        message: "Phiên đăng nhập đã kết thúc",
-                        description: "Vui lòng đăng nhập lại!",
-                        duration: 5
-                    })
-                    //Xóa hết dữ liệu trong LocalStorage
+        if (decodedToken.exp < Math.floor(currentTime / 1000)) {
+            try {
+                const response = await refreshToken(token);
+                const newToken = response?.data?.result.token;
+                LocalStorageService.setItem("token", newToken);
+                config.headers.Authorization = `Bearer ${newToken}`;
+            } catch (error) {
+                if (!isTokenInvalid) {
+                    isTokenInvalid = true; // Đánh dấu token không hợp lệ
+                    // Xóa hết dữ liệu trong LocalStorage
                     LocalStorageService.clear();
-                    window.location.href = "/"
-                    return Promise.reject(error);
-               });
-        } else config.headers.Authorization = `Bearer ${token}`;
-        
+                    alert("Phiên đăng nhập đã kết thúc. Vui lòng đăng nhập lại!"); // Sử dụng alert
+                    window.location.href = "/login";
+                }
+                return Promise.reject(error);
+            }
+        } else {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+
         return config;
     },
     (error) => {
